@@ -10,6 +10,10 @@ const UserSchema = new Schema(
     password: String,
     googleId: String,
     spotify: String,
+    role: {
+      type: String,
+      enum: ["Admin", "User"],
+    },
     refreshTokens: [{ token: String }],
   },
 

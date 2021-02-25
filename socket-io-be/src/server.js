@@ -10,6 +10,10 @@ const oauth = require("./services/auth/oauth");
 //*ROUTER
 const userRouter = require("./services/users");
 
+//*SOCKET.IO
+const createSocketServer = require("./socket");
+const http = require("http");
+
 const {
   notFoundErrorHandler,
   unauthorizedErrorHandler,
@@ -19,6 +23,9 @@ const {
 } = require("./errorHandling");
 
 const server = express();
+const httpServer = http.createServer(server);
+createSocketServer(httpServer);
+
 const port = process.env.PORT || 5001;
 // const staticFolderPath = join(__dirname, "../public");
 
@@ -58,7 +65,8 @@ mongoose
   })
   .catch(error => console.log(error))
   .then(
-    server.listen(port, () =>
+    //*httpserver is server + socket.io
+    httpServer.listen(port, () =>
       console.log(`listen on port: http://localhost:${port}`)
     )
   )
